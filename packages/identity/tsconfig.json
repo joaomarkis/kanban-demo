@@ -10,5 +10,5 @@
     "experimentalDecorators": true,
     "sourceMap": true
   },
-  "include": ["src", "../admin/src/types/user.types.ts"]
+  "include": ["src"]
 }

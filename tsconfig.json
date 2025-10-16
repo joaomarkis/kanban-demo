@@ -1,8 +1,9 @@
 {
-  "files": [], 
+  "files": [],
   "references": [
     { "path": "packages/database" },
     { "path": "packages/shared" },
-    { "path": "packages/board" }
+    { "path": "packages/board" },
+    { "path": "packages/identity" }
   ]
 }
