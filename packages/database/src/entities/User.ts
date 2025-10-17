@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, PrimaryColumn } from "typeorm"
 import { v4 } from "uuid"
 import * as identity from "@kanban/identity/types"
-import { hashPassword } from "@kanban/identity"
 
 @Entity()
 export class User {
@@ -15,12 +14,14 @@ export class User {
     @Column()
     email!: string
 
+    @Column({
+        type: "enum",
+        enum: identity.UserStatus,
+    })
+    status!: identity.UserStatus
+
     @Column()
     passwordHash!: string
-
-    constructor(partial: Partial<User>) {
-        Object.assign(this, partial);
-    }
 
     @BeforeInsert()
     generateID() {
@@ -30,12 +31,23 @@ export class User {
     }
 
     public static fromDomain(user: identity.User): User {
-        return new User({
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            passwordHash: user.passwordHash
-        })
+        const entity = new User();
+        entity.id = user.id,
+        entity.email = user.email,
+        entity.name = user.name,
+        entity.passwordHash = user.passwordHash
+        entity.status = user.status
+        return entity
+    }
+
+    public toDomain(): identity.User {
+        return identity.User.fromPersistence(
+            this.id,
+            this.name,
+            this.email,
+            this.passwordHash,
+            this.status
+        );
     }
 
 }

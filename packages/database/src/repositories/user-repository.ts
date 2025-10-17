@@ -16,7 +16,7 @@ export class UserRepository implements identity.Persister {
         this.repository = AppDataSource.getRepository(UserEntity);
     }
 
-    async findUserById(id: string): Promise<User | null> {
+    async findUserById(id: string): Promise<User> {
         const entity = await this.repository.findOneBy({ id })
         if (!entity) {
             throw new PersistenceError({
@@ -24,10 +24,16 @@ export class UserRepository implements identity.Persister {
                 message: "User not found"
             })
         }
-        const user = User.fromPersistence({
-            id: entity.id, name: entity.name,
-            email: entity.email, passwordHash: entity.passwordHash
-        })
+        const user = entity.toDomain()
+        return user
+    }
+
+    async findUserByCredential(credential: string): Promise<User | null> {
+        const entity = await this.repository.findOneBy({ email: credential })
+        if (!entity) {
+            return null
+        }
+        const user = entity.toDomain()
         return user
     }
 

@@ -12,7 +12,8 @@
       "@kanban/shared/*": ["packages/shared/src/*"],
       "@kanban/board": ["./packages/board/src"],
       "@kanban/identity": ["./packages/identity/src/identity"],
-      "@kanban/identity/*": ["./packages/identity/src/*"]
+      "@kanban/identity/*": ["./packages/identity/src/*"],
+      "@kanban/config": ["./packages/shared/src/config"]
     }
   }
 }
